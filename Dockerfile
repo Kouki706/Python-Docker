@@ -16,4 +16,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Change symbolic links
-RUN ln -s /usr/bin/python3.8 /usr/bin/python
+RUN ln -s /usr/bin/python3.8 /usr/bin/python && \
+    ln -s /usr/bin/pip3 /usr/bin/pip
+    
+# Install scpy
+RUN pip install --upgrade pip && \
+    pip install scipy matplotlib numpy pandas jupyter
