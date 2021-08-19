@@ -5,20 +5,21 @@ ENV DEBIAN_FRONTEND=noninteractive
 # install general packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    python3 \
+    python3.9 \
     python3-pip \
-    openssh-client \
-    git && \
+    make && \
+    # Install Fonts
+    echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | debconf-set-selections && \
+    apt-get install -y --no-install-recommends ttf-mscorefonts-installer \
+    fonts-ipafont fonts-ipaexfont \
+    fontconfig && \
+    fc-cache -fv && \
     # clean to reduce image size
     apt-get clean -y && \
     apt-get autoremove -y && \
     apt-get autoclean -y && \
     rm -rf /var/lib/apt/lists/*
 
-# Change symbolic links
-RUN ln -s /usr/bin/python3.8 /usr/bin/python && \
-    ln -s /usr/bin/pip3 /usr/bin/pip
-    
 # Install scpy
-RUN pip install --upgrade pip && \
-    pip install scipy matplotlib numpy pandas jupyter
+RUN python3.9 -m pip install --upgrade pip && \
+    python3.9 -m pip install scipy matplotlib numpy pandas jupyter black
