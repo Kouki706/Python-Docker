@@ -1,18 +1,23 @@
-FROM ubuntu:latest
+FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 # install general packages
-RUN apt update && \
-    apt install -y --no-install-recommends \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     python3 \
-    python3-pip && \
+    python3-pip \
+    ghostscript \
+    # fonts
+    cabextract \
+    xfonts-utils \
+    wget && \
     # Install Fonts
-    echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections && \
-    apt-get install -y --no-install-recommends fontconfig ttf-mscorefonts-installer \
+    wget http://ftp.jp.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb && \
+    dpkg -i ttf-mscorefonts-installer_3.8_all.deb && \
+    apt-get install -y --no-install-recommends fontconfig \
     fonts-ipafont \
-    fonts-ipaexfont \
-    fontconfig && \
+    fonts-ipaexfont && \
     fc-cache -fv && \
     # clean to reduce image size
     apt-get clean -y && \
@@ -22,7 +27,10 @@ RUN apt update && \
 
 # Install scpy
 RUN pip install --upgrade pip && \
-    pip install scipy matplotlib numpy pandas jupyter
+    pip install scipy matplotlib numpy pandas && \
+    pip install scipy matplotlib numpy pandas -U
+
+WORKDIR /workdir
 
 ENTRYPOINT [ "python3" ]
 CMD [ "-help" ]
