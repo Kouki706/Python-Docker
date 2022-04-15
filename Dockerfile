@@ -5,16 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # install general packages
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
-  ghostscript \
-  # fonts
-  cabextract \
-  xfonts-utils \
-  fontconfig \
-  wget && \
-  # Install Fonts
-  wget http://ftp.jp.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb && \
-  dpkg -i ttf-mscorefonts-installer_3.8_all.deb && \
-  fc-cache -fv && \
+  dvipng texlive-latex-extra texlive-fonts-recommended cm-super fonts-noto-cjk ghostscript && \
   # clean to reduce image size
   apt-get clean -y && \
   apt-get autoremove -y && \
@@ -23,7 +14,7 @@ RUN apt-get update && \
 
 # Install scpy
 RUN pip install --upgrade pip && \
-  pip install scipy matplotlib numpy pandas black
+  pip install scipy matplotlib numpy pandas black SciencePlots
 
 WORKDIR /workdir
 
