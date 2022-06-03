@@ -5,7 +5,21 @@ ENV DEBIAN_FRONTEND=noninteractive
 # install general packages
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
-  dvipng texlive-latex-extra texlive-fonts-recommended cm-super fonts-noto-cjk ghostscript && \
+  dvipng \
+  texlive-latex-extra \
+  texlive-fonts-recommended \
+  cm-super \
+  fonts-noto-cjk \
+  ghostscript \
+  # fonts
+  cabextract \
+  xfonts-utils \
+  fontconfig \
+  wget && \
+  # Install Fonts
+  wget http://ftp.jp.debian.org/debian/pool/contrib/m/msttcorefonts/ttf-mscorefonts-installer_3.8_all.deb && \
+  dpkg -i ttf-mscorefonts-installer_3.8_all.deb && \
+  fc-cache -fv && \
   # clean to reduce image size
   apt-get clean -y && \
   apt-get autoremove -y && \
