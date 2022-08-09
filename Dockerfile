@@ -1,4 +1,4 @@
-FROM python:3.9.10-slim-bullseye
+FROM python:3.10.6-slim-bullseye
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -28,9 +28,4 @@ RUN apt-get update && \
 
 # Install scpy
 RUN pip install --upgrade pip && \
-  pip install scipy matplotlib numpy pandas black SciencePlots
-
-WORKDIR /workdir
-
-ENTRYPOINT [ "python" ]
-CMD [ "-help" ]
+  pip install scipy matplotlib numpy pandas SciencePlots
